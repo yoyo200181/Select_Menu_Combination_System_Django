@@ -4,6 +4,9 @@ services:
     build:
       context: ./src
       dockerfile: Dockerfile
+    environment:
+      - SECRET_KEY=87c7e33518d2fef1fb200e2ff34579362a3e5bad3bcb8aa1
+      - DEBUG=True
     depends_on:
       - db
     ports:
