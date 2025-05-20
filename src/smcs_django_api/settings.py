@@ -72,8 +72,14 @@ WSGI_APPLICATION = 'smcs_django_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('MYSQL_DATABASE', 'railway'),
+        'USER': os.environ.get('MYSQL_USER', 'root'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'rJOsmKbBRsjuZkzWmnFJnKjWwORCBcdS'),
+        'HOST': os.environ.get('MYSQL_HOST', 'tramway.proxy.rlwy.net'),
+        'PORT': os.environ.get('MYSQL_PORT', '59626'),
+        'CONN_MAX_AGE': 9,
+        'OPTIONS' : {'ssl' : False},
     }
 }
 
