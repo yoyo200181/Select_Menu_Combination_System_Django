@@ -9,6 +9,9 @@ ENV PYTHONUNBUFFERED=1
 RUN mkdir /app
 WORKDIR /app
 
+# create the app user
+RUN useradd  -ms /bin/bash app
+
 # ARG UID=10001
 # RUN adduser \
 #     --disabled-password \
@@ -29,7 +32,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 
 # Switch to the non-privileged user to run the application.
-# USER appuser
+USER appuser
 
 # Copy the source code into the container.
 COPY . .
@@ -39,3 +42,4 @@ COPY . .
 
 # # Run the application.
 # CMD python3 ./src
+RUN python3 manage.py collectstatic
