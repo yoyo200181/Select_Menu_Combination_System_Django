@@ -9,5 +9,13 @@
 3. add Config in settings.py
 
 # superuser ac
+1. superuser ac
+```
 admin
 smcsadmin
+```
+2. user ac
+```
+user
+smscuser
+```
