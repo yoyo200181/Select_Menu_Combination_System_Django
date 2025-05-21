@@ -73,11 +73,11 @@ WSGI_APPLICATION = 'smcs_django_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('MYSQL_DATABASE', 'railway'),
+        'NAME': os.environ.get('MYSQL_DATABASE', 'smcs'),
         'USER': os.environ.get('MYSQL_USER', 'root'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'rJOsmKbBRsjuZkzWmnFJnKjWwORCBcdS'),
-        'HOST': os.environ.get('MYSQL_HOST', 'tramway.proxy.rlwy.net'),
-        'PORT': os.environ.get('MYSQL_PORT', '59626'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', '-Yoyo200181'),
+        'HOST': os.environ.get('MYSQL_HOST', 'db'),
+        'PORT': os.environ.get('MYSQL_PORT', '3306'),
         'CONN_MAX_AGE': 9,
         'OPTIONS' : {'ssl' : False},
     }
