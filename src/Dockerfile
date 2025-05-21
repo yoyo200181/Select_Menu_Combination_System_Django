@@ -10,7 +10,10 @@ RUN mkdir /app
 WORKDIR /app
 
 # create the app user
-RUN useradd  -ms /bin/bash app
+#RUN useradd  -ms /bin/bash appuser
+RUN useradd -m -s /bin/bash appuser && \
+    mkdir -p /app/static && \
+    chown appuser:appuser /app/static
 
 # ARG UID=10001
 # RUN adduser \
@@ -22,9 +25,14 @@ RUN useradd  -ms /bin/bash app
 #     --uid "${UID}" \
 #     appuser
 
-#install psycopg2 dependencies
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y python3.8-dev python3-setuptools default-libmysqlclient-dev build-essential
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    python3-dev \
+    pkg-config \
+    libmariadb-dev-compat \
+    libmariadb-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /app/requirements.txt
 RUN python3 -m pip install --upgrade pip
@@ -37,9 +45,11 @@ USER appuser
 # Copy the source code into the container.
 COPY . .
 
-# Expose the port that the application listens on.
-# EXPOSE 8080
-
 # # Run the application.
 # CMD python3 ./src
-RUN python3 manage.py collectstatic
+RUN python3 manage.py collectstatic --noinput
+
+# Expose the port that the application listens on.
+EXPOSE 8080
+
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
