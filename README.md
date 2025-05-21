@@ -19,3 +19,13 @@ smcsadmin
 user
 smscuser
 ```
+
+# command
+1. run local
+```
+docker-compose up -d
+```
+2. run on railway
+```
+docker-compose --env-file ../.env.prod up -d
+```
