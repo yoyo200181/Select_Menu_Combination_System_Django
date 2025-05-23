@@ -10,20 +10,9 @@ RUN mkdir /app
 WORKDIR /app
 
 # create the app user
-#RUN useradd  -ms /bin/bash appuser
 RUN useradd -m -s /bin/bash appuser && \
     mkdir -p /app/static && \
     chown appuser:appuser /app/static
-
-# ARG UID=10001
-# RUN adduser \
-#     --disabled-password \
-#     --gecos "" \
-#     --home "/nonexistent" \
-#     --shell "/sbin/nologin" \
-#     --no-create-home \
-#     --uid "${UID}" \
-#     appuser
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -45,11 +34,10 @@ USER appuser
 # Copy the source code into the container.
 COPY . .
 
-# # Run the application.
-# CMD python3 ./src
+# Run the application.
 RUN python3 manage.py collectstatic --noinput
 
 # Expose the port that the application listens on.
 EXPOSE 8000
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python3", "src/manage.py", "runserver", "0.0.0.0:8000"]
