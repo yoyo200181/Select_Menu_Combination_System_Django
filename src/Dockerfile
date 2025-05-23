@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libmariadb-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt /app/requirements.txt
+COPY src/requirements.txt /app/requirements.txt
 RUN python3 -m pip install --upgrade pip
 RUN pip3 install --no-cache-dir -r requirements.txt
 
@@ -32,10 +32,10 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 USER appuser
 
 # Copy the source code into the container.
-COPY . .
+COPY src/ .
 
 # Run the application.
-RUN python3 src/manage.py collectstatic --noinput
+RUN python3 manage.py collectstatic --noinput
 
 # Expose the port that the application listens on.
 EXPOSE 8000
