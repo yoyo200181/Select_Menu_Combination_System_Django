@@ -5,16 +5,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', '87c7e33518d2fef1fb200e2ff34579362a3e5bad3bcb8aa1')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', True)
-
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
 
@@ -65,23 +55,27 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'smcs_django_api.wsgi.application'
-
+ENVIRONMENT = os.environ.get('ENVIRONMENT', 'local')
 
 # Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('MYSQL_DATABASE', 'smcs'),
-        'USER': os.environ.get('MYSQL_USER', 'root'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', '-Yoyo200181'),
+        'USER': os.environ.get('MYSQL_USER', 'yoyo'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'Yoyo_200181'),
         'HOST': os.environ.get('MYSQL_HOST', 'db'),
         'PORT': os.environ.get('MYSQL_PORT', '3306'),
         'CONN_MAX_AGE': 9,
-        'OPTIONS' : {'ssl' : False},
+        # 'OPTIONS' : {'ssl' : False},
+        'OPTIONS': {
+            'ssl': False if ENVIRONMENT == 'local' else True,  # Enable SSL for production
+        },
     }
 }
+
+SECRET_KEY = os.environ.get('SECRET_KEY', '87c7e33518d2fef1fb200e2ff34579362a3e5bad3bcb8aa1')
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 
 # Password validation
@@ -107,11 +101,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
