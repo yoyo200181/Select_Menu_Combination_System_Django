@@ -17,7 +17,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
             username=attrs['username']).exists()
         if username_exists:
             raise serializers.ValidationError('Username already exists')
-        
+
         phone_number_exists = not attrs['phone_number']=="" and User.objects.filter(
             phone_number=attrs['phone_number']).exists()
         if phone_number_exists:
