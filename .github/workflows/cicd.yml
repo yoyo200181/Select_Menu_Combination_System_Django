@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+
+permissions: write-all
+
 jobs:
   lint:
       runs-on: ubuntu-latest
@@ -23,6 +26,15 @@ jobs:
           autopep8 --in-place --aggressive --aggressive -r src/
       - name: Run flake8
         run: flake8 src/
+      - name: Commit fixed files
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add .
+          git commit -m "Apply autopep8 fixes" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   test:
     runs-on: ubuntu-latest
@@ -36,15 +48,24 @@ jobs:
           MYSQL_ROOT_PASSWORD: Yoyo_200181
         ports:
             - 3306:3306
-        # options: >
-        #   --health-cmd="mysqladmin ping"
-        #   --health-interval=10s
-        #   --health-timeout=5s
-        #   --health-retries=3
+        options: >
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Pull MySQL image
         run: docker pull mysql:9
+      - name: Debug MySQL container
+        run: |
+          echo "Listing all containers:"
+          docker ps -a
+          echo "MySQL container logs:"
+          docker logs $(docker ps -a -q --filter "label=9ead93") || echo "No MySQL container found"
+          echo "Network inspection:"
+          docker network ls
+          docker network inspect github_network_$(docker ps -a -q --filter "label=9ead93" --format "{{.Networks}}") || echo "Network inspection failed"
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -60,11 +81,28 @@ jobs:
             build-essential
           pip install -r src/requirements.txt
       - name: Wait for MySQL
+        env:
+            MYSQL_PWD: Yoyo_200181
         run: |
-          until mysqladmin ping -h mysql -u yoyo --password=Yoyo_200181 --silent; do
-            echo "Waiting for MySQL..."
+          for i in {1..60}; do
+            if mysqladmin ping -h mysql -u yoyo --silent; then
+              echo "MySQL is up on host 'mysql'!"
+              break
+            fi
+            echo "Waiting for MySQL on host 'mysql'... ($i/60)"
+            if mysqladmin ping -h 127.0.0.1 -u yoyo --silent; then
+              echo "MySQL is up on host '127.0.0.1'!"
+              export MYSQL_HOST=127.0.0.1
+              break
+            fi
+            echo "Waiting for MySQL on host '127.0.0.1'... ($i/60)"
             sleep 2
           done
+          if [ $i -eq 60 ]; then
+            echo "Error: MySQL did not start in time"
+            docker logs $(docker ps -a -q --filter "label=9ead93")
+            exit 1
+          fi
       - name: run django test
         env:
           MYSQL_DATABASE: smcs
@@ -82,7 +120,9 @@ jobs:
     container: docker:20.10.24
     needs: [lint, test]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: build
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
