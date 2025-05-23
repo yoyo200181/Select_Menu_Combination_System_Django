@@ -24,20 +24,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
-    mysql:
-      image: mysql:9
-      env:
-        MYSQL_DATABASE: smcs
-        MYSQL_USER: yoyo
-        MYSQL_PASSWORD: Yoyo_200181
-        MYSQL_ROOT_PASSWORD: Yoyo_200181
-      ports:
-          - 3306:3306
-      options: >
-        --health-cmd="mysqladmin ping"
-        --health-interval=10s
-        --health-timeout=5s
-        --health-retries=3
+      mysql:
+        image: mysql:9
+        env:
+          MYSQL_DATABASE: smcs
+          MYSQL_USER: yoyo
+          MYSQL_PASSWORD: Yoyo_200181
+          MYSQL_ROOT_PASSWORD: Yoyo_200181
+        ports:
+            - 3306:3306
+        options: >
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
