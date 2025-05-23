@@ -5,9 +5,8 @@ from phonenumber_field.serializerfields import PhoneNumberField
 
 class UserCreationSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=25)
-    phone_number = PhoneNumberField(allow_null=True)
+    phone_number = PhoneNumberField(required=False, allow_blank=True, allow_null=True)
     password = serializers.CharField(min_length=8)
-    is_active = serializers.BooleanField(default=True)
 
     class Meta:
         model = User
@@ -18,8 +17,8 @@ class UserCreationSerializer(serializers.ModelSerializer):
             username=attrs['username']).exists()
         if username_exists:
             raise serializers.ValidationError('Username already exists')
-
-        phone_number_exists = User.objects.filter(
+        
+        phone_number_exists = not attrs['phone_number']=="" and User.objects.filter(
             phone_number=attrs['phone_number']).exists()
         if phone_number_exists:
             raise serializers.ValidationError('Phone number already exists')

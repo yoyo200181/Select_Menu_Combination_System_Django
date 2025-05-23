@@ -1,11 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
 
-class CustomUserManager(AbstractBaseUser):
+class CustomUserManager(BaseUserManager):
 
     def create_user(self, username, password, **extra_fields):
         if not username:
@@ -14,6 +14,7 @@ class CustomUserManager(AbstractBaseUser):
         username = self.normalize_username(username)
         new_user = self.model(username, **extra_fields)
         new_user.set_password(password)
+        extra_fields.setdefault('is_active', True)
         new_user.save()
 
         return new_user

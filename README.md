@@ -31,9 +31,11 @@ docker-compose up -d
 ```
 2. run on railway
 ```
-docker-compose --env-file ../.env.prod up -d
+docker-compose --env-file .env.prod up -d
 ```
 Apply migrations: `docker compose exec api python manage.py migrate`
+Create superusesr: `docker compose exec api python manage.py createsuperuser`
+
 # CI/CD Process
 1. Runs tests and linting on push or pull requests to the main branch.
 ```
