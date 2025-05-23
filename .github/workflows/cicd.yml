@@ -36,11 +36,11 @@ jobs:
           MYSQL_ROOT_PASSWORD: Yoyo_200181
         ports:
             - 3306:3306
-        options: >
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
+        # options: >
+        #   --health-cmd="mysqladmin ping"
+        #   --health-interval=10s
+        #   --health-timeout=5s
+        #   --health-retries=3
     steps:
       - uses: actions/checkout@v2
       - name: Pull MySQL image
@@ -59,6 +59,12 @@ jobs:
             libmariadb-dev \
             build-essential
           pip install -r src/requirements.txt
+      - name: Wait for MySQL
+        run: |
+          until mysqladmin ping -h mysql -u yoyo --password=${{ secrets.MYSQL_PASSWORD }} --silent; do
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
       - name: run django test
         env:
           MYSQL_DATABASE: smcs
