@@ -24,7 +24,10 @@ class Menu(models.Model):
     salt = models.DecimalField(max_digits=3, decimal_places=1)
     image_url = models.TextField()
     price = models.DecimalField(max_digits=4, decimal_places=2)
-    type = models.CharField(max_length=10, choices=FOOD_TYPE, default=FOOD_TYPE[0][0])
+    type = models.CharField(
+        max_length=10,
+        choices=FOOD_TYPE,
+        default=FOOD_TYPE[0][0])
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

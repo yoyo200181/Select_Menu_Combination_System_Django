@@ -74,7 +74,9 @@ DATABASES = {
     }
 }
 
-SECRET_KEY = os.environ.get('SECRET_KEY', '87c7e33518d2fef1fb200e2ff34579362a3e5bad3bcb8aa1')
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    '87c7e33518d2fef1fb200e2ff34579362a3e5bad3bcb8aa1')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 

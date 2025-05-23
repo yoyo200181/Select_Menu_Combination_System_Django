@@ -6,7 +6,10 @@ from . import serializers
 
 class UserHelloView(generics.GenericAPIView):
     def get(self, request):
-        return Response(data={"message": "Hello, User!"}, status=status.HTTP_200_OK)
+        return Response(
+            data={
+                "message": "Hello, User!"},
+            status=status.HTTP_200_OK)
 
 
 class UserCreateView(generics.GenericAPIView):
@@ -18,5 +21,9 @@ class UserCreateView(generics.GenericAPIView):
 
         if serializer.is_valid():
             serializer.save()
-            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                data=serializer.data,
+                status=status.HTTP_201_CREATED)
+        return Response(
+            data=serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST)
