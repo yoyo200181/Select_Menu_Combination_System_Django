@@ -35,9 +35,9 @@ USER appuser
 COPY . .
 
 # Run the application.
-RUN python3 manage.py collectstatic --noinput
+RUN python3 src/manage.py collectstatic --noinput
 
 # Expose the port that the application listens on.
 EXPOSE 8000
 
-CMD ["python3", "src/manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
