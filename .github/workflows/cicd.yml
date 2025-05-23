@@ -43,6 +43,8 @@ jobs:
           --health-retries=3
     steps:
       - uses: actions/checkout@v2
+      - name: Pull MySQL image
+        run: docker pull mysql:9
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
