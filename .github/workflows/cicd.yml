@@ -61,7 +61,7 @@ jobs:
           pip install -r src/requirements.txt
       - name: Wait for MySQL
         run: |
-          until mysqladmin ping -h mysql -u yoyo --password=${{ secrets.MYSQL_PASSWORD }} --silent; do
+          until mysqladmin ping -h mysql -u yoyo --password=Yoyo_200181 --silent; do
             echo "Waiting for MySQL..."
             sleep 2
           done
