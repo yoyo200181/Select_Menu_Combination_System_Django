@@ -130,7 +130,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: build
         run: |
-          docker build -t yoyo200181/smcs:v1.0-f src/Dockerfile .
+          docker build -t yoyo200181/smcs:v1.0 -f src/Dockerfile .
           docker push yoyo200181/smcs:v1.0
   
   # deploy:
