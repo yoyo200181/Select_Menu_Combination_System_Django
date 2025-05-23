@@ -48,7 +48,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: Yoyo_200181
         ports:
             - 3306:3306
-        options: >
+        options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
           --health-timeout=5s
