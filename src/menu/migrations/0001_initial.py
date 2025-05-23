@@ -24,7 +24,11 @@ class Migration(migrations.Migration):
                 ('salt', models.DecimalField(decimal_places=1, max_digits=3)),
                 ('image_url', models.TextField()),
                 ('price', models.DecimalField(decimal_places=2, max_digits=4)),
-                ('type', models.CharField(choices=[('MEAT', 'meat'), ('EGG', 'egg'), ('VEGETABLE', 'vegetable'), ('GRAIN', 'grain'), ('SET', 'set')], default='MEAT', max_length=10)),
+                ('type', models.CharField(choices=[
+                    ('MEAT', 'meat'),
+                    ('EGG', 'egg'),
+                    ('VEGETABLE', 'vegetable'),
+                    ('GRAIN', 'grain'), ('SET', 'set')], default='MEAT', max_length=10)),
                 ('is_active', models.BooleanField(default=True)),
             ],
         ),

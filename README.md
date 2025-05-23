@@ -34,7 +34,7 @@ Apply migrations: `docker compose exec api python manage.py migrate`
 # CI/CD Process
 1. Runs tests and linting on push or pull requests to the main branch.
 ```
-Linting: Runs flake8 to check code style
+Linting: Runs `flake8` to check code style
 Testing: Sets up a MySQL service (mysql:9), installs dependencies, and runs python manage.py test.
 ```
 Ensure tests pass locally:`docker compose exec api python manage.py test`

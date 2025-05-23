@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'authentication.apps.AuthenticationConfig',
     'menu.apps.MenuConfig',
 
-    #third party apps
+    # third party apps
     'rest_framework',
 ]
 
